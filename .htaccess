@@ -1,23 +1,9 @@
-# Apache Server Configs v2.0.0 | MIT License
-
-# (!) Using `.htaccess` files slows down Apache, therefore, if you have access
-# to the main server config file (usually called `httpd.conf`), you should add
-# this logic there: http://httpd.apache.org/docs/current/howto/htaccess.html.
-
-# ##############################################################################
-# # 301 REDIRECT ENTIRE DIRECTORY                                              #
-# ##############################################################################
-
+# all of this lifted from a WordPress htaccess example
 <IfModule mod_rewrite.c>
-    RewriteEngine On
-
-    RewriteRule ^pricing_availability /pricing-availability/ [R=301,L]
-    RewriteRule ^pricingavailability /pricing-availability/ [R=301,L]
-    RewriteRule ^pricingandavailability.html /pricing-availability/ [R=301,L]
-    RewriteRule ^doesntexist.html /pricing-availability/ [R=301,L]
-    RewriteRule ^goestoroot / [R=301,L]
-
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
+ RewriteEngine On
+ RewriteBase /
+ RewriteRule ^index\.php$ - [L]
+ RewriteCond %{REQUEST_FILENAME} !-f
+ RewriteCond %{REQUEST_FILENAME} !-d
+ RewriteRule . /index.php [L]
 </IfModule>
