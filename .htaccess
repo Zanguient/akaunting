@@ -10,6 +10,13 @@
     </IfModule>
 
     RewriteEngine On
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    RewriteCond %{REQUEST_FILENAME} -s [OR]
+    RewriteCond %{REQUEST_FILENAME} -l [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^.*$ - [NC,L]
+    RewriteRule ^.*$ index.php [NC,L]
 
     # Prevent Direct Access to Protected Files
     <FilesMatch "(?i)(^artisan$|\.env|\.log)">
@@ -23,9 +30,7 @@
             Require all denied
         </IfModule>
     </FilesMatch>
-    
-    RewriteCond %{HTTPS} !=on
-  
+
     # Prevent Direct Access To Protected Folders
     RewriteRule ^(app|bootstrap|config|database|overrides|resources|routes|storage|tests)/(.*) / [L,R=301]
 
@@ -34,7 +39,7 @@
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
 
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
